@@ -127,7 +127,7 @@ public class MavenProject
 
     private List<RemoteRepository> remotePluginRepositories;
 
-    private List<Artifact> attachedArtifacts;
+    private List<Artifact> attachedArtifacts = new ArrayList<>();
 
     private MavenProject executionProject;
 
@@ -926,18 +926,20 @@ public class MavenProject
      * coordinates.
      *
      * @param artifact the artifact to add or replace.
-     * @throws DuplicateArtifactAttachmentException
+     * @deprecated Please use {@link MavenProjectHelper}
+     * @throws DuplicateArtifactAttachmentException not used anymore but leave it for backward compatibility
      */
     public void addAttachedArtifact( Artifact artifact )
         throws DuplicateArtifactAttachmentException
     {
         // if already there we remove it and add again
-        if ( getAttachedArtifacts().contains( artifact ) )
+        int index = attachedArtifacts.indexOf( artifact );
+        if ( index > 0 )
         {
             LOGGER.warn( "artifact {} already attached, remove previous instance and add again" );
-            getAttachedArtifacts().remove( artifact );
+            attachedArtifacts.set( index, artifact );
         }
-        getAttachedArtifacts().add( artifact );
+        attachedArtifacts.add( artifact );
     }
 
     public List<Artifact> getAttachedArtifacts()
@@ -946,7 +948,7 @@ public class MavenProject
         {
             attachedArtifacts = new ArrayList<>();
         }
-        return attachedArtifacts;
+        return Collections.unmodifiableList( attachedArtifacts );
     }
 
     public Xpp3Dom getGoalConfiguration( String pluginGroupId, String pluginArtifactId, String executionId,
