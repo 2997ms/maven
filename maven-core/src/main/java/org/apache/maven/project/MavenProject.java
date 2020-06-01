@@ -72,6 +72,8 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.aether.graph.DependencyFilter;
 import org.eclipse.aether.repository.RemoteRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The concern of the project is provide runtime values based on the model.
@@ -90,6 +92,9 @@ import org.eclipse.aether.repository.RemoteRepository;
 public class MavenProject
     implements Cloneable
 {
+
+    private static final transient Logger LOGGER = LoggerFactory.getLogger( MavenProject.class );
+
     public static final String EMPTY_PROJECT_GROUP_ID = "unknown";
 
     public static final String EMPTY_PROJECT_ARTIFACT_ID = "empty-project";
@@ -926,6 +931,12 @@ public class MavenProject
     public void addAttachedArtifact( Artifact artifact )
         throws DuplicateArtifactAttachmentException
     {
+        // if already there we remove it and add again
+        if ( getAttachedArtifacts().contains( artifact ) )
+        {
+            LOGGER.warn( "artifact {} already attached, remove previous instance and add again" );
+            getAttachedArtifacts().remove( artifact );
+        }
         getAttachedArtifacts().add( artifact );
     }
 
