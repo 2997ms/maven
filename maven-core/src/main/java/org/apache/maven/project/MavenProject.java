@@ -927,7 +927,7 @@ public class MavenProject
      *
      * @param artifact the artifact to add or replace.
      * @deprecated Please use {@link MavenProjectHelper}
-     * @throws DuplicateArtifactAttachmentException not used anymore but leave it for backward compatibility
+     * @throws DuplicateArtifactAttachmentException will never happen but leave it for backward compatibility
      */
     public void addAttachedArtifact( Artifact artifact )
         throws DuplicateArtifactAttachmentException
@@ -936,10 +936,13 @@ public class MavenProject
         int index = attachedArtifacts.indexOf( artifact );
         if ( index > 0 )
         {
-            LOGGER.warn( "artifact {} already attached, remove previous instance and add again" );
+            LOGGER.warn( "artifact {} already attached, replace previous instance", artifact );
             attachedArtifacts.set( index, artifact );
         }
-        attachedArtifacts.add( artifact );
+        else
+        {
+            attachedArtifacts.add( artifact );
+        }
     }
 
     public List<Artifact> getAttachedArtifacts()
