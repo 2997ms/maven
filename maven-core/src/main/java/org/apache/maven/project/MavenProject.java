@@ -93,7 +93,7 @@ public class MavenProject
     implements Cloneable
 {
 
-    private static final transient Logger LOGGER = LoggerFactory.getLogger( MavenProject.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger( MavenProject.class );
 
     public static final String EMPTY_PROJECT_GROUP_ID = "unknown";
 
