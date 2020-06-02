@@ -934,7 +934,7 @@ public class MavenProject
     {
         // if already there we remove it and add again
         int index = attachedArtifacts.indexOf( artifact );
-        if ( index > 0 )
+        if ( index >= 0 )
         {
             LOGGER.warn( "artifact {} already attached, replace previous instance", artifact );
             attachedArtifacts.set( index, artifact );
